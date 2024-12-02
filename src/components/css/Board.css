@@ -1,0 +1,25 @@
+.board {
+  width: 100vw;
+  min-height: calc(100vh - 56px);
+  background-color: #f4f6fa;
+  padding-left: 38px;
+  padding-top: 30px;
+}
+
+.available::after {
+  width: 8px;
+  height: 8px;
+  content: "";
+  background-color: gray;
+  z-index: 8;
+  display: block;
+  position: relative;
+  top: -10px;
+  left: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.available.bg-avail::after {
+  background-color: green;
+}
