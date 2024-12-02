@@ -91,7 +91,7 @@ export const Kanban = ({ type, header, tickets, orderType, users }) => {
   }, [tickets, orderType]);
 
   return (
-    <div style={{ display: "flex", gap: "50px" }}>
+    <div style={{ display: "flex", gap: "50px", backgroundColor: "#f4f6fa" }}>
       {header.map((item, idx) => (
         <div key={idx} style={{ display: "flex", flexDirection: "column" }}>
           {type === "Status" && (

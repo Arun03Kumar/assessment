@@ -21,7 +21,12 @@ function App() {
 
   return (
     <div className="App">
-      <Header displayType={displayType} orderType={orderType} setDisplayType={setDisplayType} setOrderType={setOrderType} />
+      <Header
+        displayType={displayType}
+        orderType={orderType}
+        setDisplayType={setDisplayType}
+        setOrderType={setOrderType}
+      />
       <Board displayType={displayType} orderType={orderType} />
     </div>
   );

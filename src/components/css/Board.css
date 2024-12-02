@@ -1,6 +1,7 @@
 .board {
-  width: 100vw;
-  min-height: calc(100vh - 56px);
+  /* min-width: 100%; */
+  /* min-height: calc(100vh - 56px); */
+  height: 100%;
   background-color: #f4f6fa;
   padding-left: 38px;
   padding-top: 30px;
