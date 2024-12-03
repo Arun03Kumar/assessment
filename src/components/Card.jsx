@@ -31,7 +31,10 @@ const Card = ({ type, values, available }) => {
   };
 
   return (
-    <div className="card-container">
+    <div className="card-container" draggable="true" onDragStart={(e) => {
+      e.dataTransfer.setData("text/plain", JSON.stringify(values)); // Pass card data
+      console.log("Dragging:", values);
+    }}>
       <div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <p className="card-id">{values.id}</p>

@@ -90,12 +90,132 @@ export const Kanban = ({ type, header, tickets, orderType, users }) => {
     setTicketsByUsers(sortedTicketsByUsers);
   }, [tickets, orderType]);
 
+  const handleDrop = (e, val, type) => {
+    e.preventDefault();
+    if (type === "User") {
+      const draggedData = JSON.parse(e.dataTransfer.getData("text/plain"));
+
+      const start_user = draggedData.userId;
+      const end_user = val[0].userId;
+
+      if (start_user !== end_user) {
+        setTicketsByUsers((prevTicketsByUsers) => {
+          const updatedTicketsByUsers = JSON.parse(
+            JSON.stringify(prevTicketsByUsers)
+          );
+
+          updatedTicketsByUsers[start_user] = updatedTicketsByUsers[
+            start_user
+          ].filter((ticket) => ticket.id !== draggedData.id);
+
+          const updatedTicket = { ...draggedData, userId: end_user };
+
+          if (!updatedTicketsByUsers[end_user]) {
+            updatedTicketsByUsers[end_user] = [];
+          }
+
+          const isDuplicate = updatedTicketsByUsers[end_user].some(
+            (ticket) => ticket.id === updatedTicket.id
+          );
+
+          if (!isDuplicate) {
+            updatedTicketsByUsers[end_user].push(updatedTicket);
+          }
+
+          // console.log("Updated tickets by users:", updatedTicketsByUsers);
+          return updatedTicketsByUsers;
+        });
+      }
+    }
+  };
+
+  const handleDropPriority = (e, val) => {
+    console.log("drag end", val);
+    console.log("com", ticketsByPriority);
+    const draggedData = JSON.parse(e.dataTransfer.getData("text/plain"));
+
+    const start_user = draggedData.priority;
+    const end_user = val[0].priority;
+
+    if (start_user !== end_user) {
+      setTicketsByPriority((prevTicketsByUsers) => {
+        const updatedTicketsByUsers = JSON.parse(
+          JSON.stringify(prevTicketsByUsers)
+        );
+
+        updatedTicketsByUsers[start_user] = updatedTicketsByUsers[
+          start_user
+        ].filter((ticket) => ticket.id !== draggedData.id);
+
+        const updatedTicket = { ...draggedData, userId: end_user };
+
+        if (!updatedTicketsByUsers[end_user]) {
+          updatedTicketsByUsers[end_user] = [];
+        }
+
+        const isDuplicate = updatedTicketsByUsers[end_user].some(
+          (ticket) => ticket.id === updatedTicket.id
+        );
+
+        if (!isDuplicate) {
+          updatedTicketsByUsers[end_user].push(updatedTicket);
+        }
+
+        // console.log("Updated tickets by users:", updatedTicketsByUsers);
+        return updatedTicketsByUsers;
+      });
+    }
+  };
+
+  const handleDropStatus = (e, val, txt) => {
+    console.log(txt);
+    console.log(ticketsByStatus);
+    const draggedData = JSON.parse(e.dataTransfer.getData("text/plain"));
+
+    const start_user = draggedData.status;
+    const end_user = txt;
+
+    if (start_user !== end_user) {
+      setTicketsByStatus((prevTicketsByUsers) => {
+        const updatedTicketsByUsers = JSON.parse(
+          JSON.stringify(prevTicketsByUsers)
+        );
+
+        updatedTicketsByUsers[start_user] = updatedTicketsByUsers[
+          start_user
+        ].filter((ticket) => ticket.id !== draggedData.id);
+
+        const updatedTicket = { ...draggedData, userId: end_user };
+
+        if (!updatedTicketsByUsers[end_user]) {
+          updatedTicketsByUsers[end_user] = [];
+        }
+
+        const isDuplicate = updatedTicketsByUsers[end_user].some(
+          (ticket) => ticket.id === updatedTicket.id
+        );
+
+        if (!isDuplicate) {
+          updatedTicketsByUsers[end_user].push(updatedTicket);
+        }
+
+        // console.log("Updated tickets by users:", updatedTicketsByUsers);
+        return updatedTicketsByUsers;
+      });
+    }
+  };
+
   return (
     <div style={{ display: "flex", gap: "50px", backgroundColor: "#f4f6fa" }}>
       {header.map((item, idx) => (
         <div key={idx} style={{ display: "flex", flexDirection: "column" }}>
           {type === "Status" && (
-            <>
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) =>
+                handleDropStatus(e, ticketsByStatus[item[0]], item[0])
+              }
+            >
               <KanbanHeader
                 title={item[0]}
                 logo={item[1]}
@@ -105,14 +225,17 @@ export const Kanban = ({ type, header, tickets, orderType, users }) => {
               {ticketsByStatus[item[0]]?.map((t) => {
                 const user = users.find((u) => u.id === t.userId);
                 return (
-                  <Card type="status" values={t} available={user.available} />
+                  <Card type="status" values={t} available={user?.available} />
                 );
               })}
-            </>
+            </div>
           )}
 
           {type === "Priority" && (
-            <>
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => handleDropPriority(e, ticketsByPriority[item[0]])}
+            >
               <KanbanHeader
                 title={priorityMapping[item[0]]}
                 logo={item[1]}
@@ -122,14 +245,21 @@ export const Kanban = ({ type, header, tickets, orderType, users }) => {
               {ticketsByPriority[item[0]]?.map((t) => {
                 const user = users.find((u) => u.id === t.userId);
                 return (
-                  <Card type="priority" values={t} available={user.available} />
+                  <Card
+                    type="priority"
+                    values={t}
+                    available={user?.available}
+                  />
                 );
               })}
-            </>
+            </div>
           )}
 
           {type === "User" && (
-            <>
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => handleDrop(e, ticketsByUsers[item.id], type)}
+            >
               <KanbanHeader
                 title={item.name}
                 logo={item[1]}
@@ -140,7 +270,7 @@ export const Kanban = ({ type, header, tickets, orderType, users }) => {
               {ticketsByUsers[item.id]?.map((t) => (
                 <Card type="user" values={t} />
               ))}
-            </>
+            </div>
           )}
         </div>
       ))}
