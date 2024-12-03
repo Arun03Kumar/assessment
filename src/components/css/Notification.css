@@ -1,0 +1,33 @@
+.not-cont{
+    width: 300px;
+    font-size: 14px;
+    text-align: justify;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-weight: 500;
+    border-radius: 10px;
+}
+/* .not-cont::before {
+    content: "X";
+    width: 25px;
+    height: 25px;
+    position: relative;
+    background-color: white;
+    left: -15px;
+    top: -20px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid rgba(128, 128, 128, 0.6);
+    cursor: pointer;
+} */
+
+.not-close{
+    cursor: pointer;
+}

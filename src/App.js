@@ -2,6 +2,7 @@ import "./App.css";
 import { Header } from "./components/Header";
 import Board from "./components/Board";
 import { useEffect, useState } from "react";
+import Notification from "./components/Notification";
 
 function App() {
   const [displayType, setDisplayType] = useState(() => {
@@ -28,6 +29,7 @@ function App() {
         setOrderType={setOrderType}
       />
       <Board displayType={displayType} orderType={orderType} />
+      <Notification />
     </div>
   );
 }
